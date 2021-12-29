@@ -70,14 +70,14 @@ class SignInViewController: UIViewController {
                 
                 let db = Firestore.firestore()
                 
-                db.collection("users").addDocument(data: ["firstname":firstname,"lastname":lastname, "uid": result!.user.uid]) { (error) in
+                db.collection("users").document(result!.user.uid).setData( ["email":email, "firstname":firstname,"lastname":lastname, "uid": result!.user.uid]) { (error) in
                     
                     if error != nil  {
                         self.showError("Ошибка при сохранении данных")
                     }
                 }
                 
-                Utilities.saveUserToDefaults(email: email, password: password)
+                Utilities.saveUserToDefaults(email: email, password: password, uid: result!.user.uid)
                 self.transitionToPage ()
             }
         

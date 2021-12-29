@@ -14,6 +14,13 @@ class PageViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     var filterPosts: [BlogPost] = []
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        fetchAllPosts()
+        tableView.reloadData()
+        print ("print")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,8 +33,9 @@ class PageViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.reloadData()
         fetchAllPosts()
+        tableView.reloadData()
+
      
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideKeyboard)))
         

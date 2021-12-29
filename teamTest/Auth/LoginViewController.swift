@@ -44,7 +44,7 @@ class LoginViewController: UIViewController {
                 
             } else {
                
-            Utilities.saveUserToDefaults(email: email, password: password)
+                Utilities.saveUserToDefaults(email: email, password: password, uid: result!.user.uid)
                 
                 let tabBarController = self.storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.tabBarViewController) as? UITabBarController
                  

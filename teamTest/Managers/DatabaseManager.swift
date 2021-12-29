@@ -20,10 +20,7 @@ final class DatabaseManager {
         email: String,
         completion: @escaping (Bool) -> Void
     ) {
-        let userEmail = email
-            .replacingOccurrences(of: ".", with: "_")
-            .replacingOccurrences(of: "@", with: "_")
-
+ 
         let data: [String: Any] = [
             "id": blogPost.identifier,
             "title": blogPost.title,
@@ -34,7 +31,7 @@ final class DatabaseManager {
 
         database
             .collection("users")
-            .document(userEmail)
+            .document(UserDefaults.standard.string(forKey: "uid")!)
             .collection("posts")
             .document(blogPost.identifier)
             .setData(data) { error in
@@ -77,13 +74,12 @@ final class DatabaseManager {
     }
 
     public func getPosts(
-        for email: String,
         completion: @escaping ([BlogPost]) -> Void
 )
     {
         database
             .collection("users")
-            .document(email)
+            .document(UserDefaults.standard.string(forKey: "uid")!)
             .collection("posts")
             .getDocuments { snapshot, error in
                 guard let documents = snapshot?.documents.compactMap({ $0.data() }),

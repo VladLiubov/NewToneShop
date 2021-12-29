@@ -18,16 +18,14 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     private let storage = Storage.storage().reference()
     
-    var currentEmail: String
+    let currentEmail: String = UserDefaults.standard.string(forKey: "email")!
     private var user: User?
     
-    init(currentEmail: String) {
-        self.currentEmail = currentEmail
+    init() {
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder decoder: NSCoder) {
-        self.currentEmail = ""
         super.init(coder: decoder)!
     }
     
@@ -36,11 +34,12 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         fetchUserPosts()
         
-        tableView.reloadData()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(PostPreviewTableViewCell.self,
                            forCellReuseIdentifier: PostPreviewTableViewCell.identifier)
+        
+        tableView.reloadData()
         
         let emailLabel = emailAddress
         emailLabel?.text = UserDefaults.standard.string(forKey: "email")
@@ -140,13 +139,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     private func fetchUserPosts() {
         
-        guard let email = UserDefaults.standard.string(forKey: "email"),
-              email == currentEmail else {
-            return
-        }
-        
-        DatabaseManager.shared.getPosts(for: currentEmail) { [weak self] posts in
+        DatabaseManager.shared.getPosts() { [weak self] posts in
             self?.posts = posts
+            print ("Posts \(posts.count)")
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
                 

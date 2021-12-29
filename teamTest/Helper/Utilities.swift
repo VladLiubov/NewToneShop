@@ -37,12 +37,13 @@ class Utilities {
         return passwordTest.evaluate(with: password)
     }
     
-    static func saveUserToDefaults (email: String, password: String) {
+    static func saveUserToDefaults (email: String, password: String, uid:String) {
          
          let defaults = UserDefaults.standard
          
          defaults.set(email, forKey: "email")
          defaults.set(password, forKey: "password")
+         defaults.set(uid, forKey: "uid")
     }
     
     
