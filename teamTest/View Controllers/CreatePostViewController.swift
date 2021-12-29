@@ -38,6 +38,7 @@ class CreatePostViewController: UIViewController {
         headerImage.isUserInteractionEnabled = true
         headerImage.image = UIImage(systemName: "photo")
 
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapHeader))
         headerImage.addGestureRecognizer(tap)
         
