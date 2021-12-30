@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseStorage
+import Firebase
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource {
     
@@ -163,7 +164,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
+        return 50
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -173,6 +174,25 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         vc.title = posts[indexPath.row].title
         navigationController?.pushViewController(vc, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+           return true
+       }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle:
+           UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+           
+           if editingStyle == .delete {
+               posts.remove(at: indexPath.row)
+               tableView.deleteRows(at: [indexPath as IndexPath], with: .fade)
+               
+
+               Database.database().reference().child("posts").child("id").removeValue()
+               
+               
+           } else if editingStyle == .insert {
+           }
+       }
 }
 
 
