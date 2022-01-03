@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseStorage
 import SwiftUI
+import Photos
 
 class CreatePostViewController: UIViewController {
 
@@ -99,15 +100,30 @@ class CreatePostViewController: UIViewController {
     }
     
     @objc func didTapHeader () {
+        if PHPhotoLibrary.authorizationStatus() == .authorized {
         let picker = UIImagePickerController()
         picker.sourceType = .photoLibrary
         picker.delegate = self
         present(picker, animated: true, completion: nil)
+        } else {
+            PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+                if status == .authorized {
+                    DispatchQueue.main.async {
+                    let picker = UIImagePickerController()
+                    picker.sourceType = .photoLibrary
+                    picker.delegate = self
+                    self.present(picker, animated: true, completion: nil)
+                    }
+                }
+            }
+        }
     }
     
     @IBAction func cencelButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
+    
+   static var didClose: (() -> Void)?
     
     @IBAction func postButton(_ sender: Any) {
         
@@ -171,6 +187,7 @@ class CreatePostViewController: UIViewController {
                         HapticsManager.shared.vibrate(for: .success)
                         print ("exit")
                         self?.cencelButton(true)
+                        Self.didClose?()
                     }
                 }
             }

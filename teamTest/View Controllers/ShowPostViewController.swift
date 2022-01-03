@@ -102,7 +102,7 @@ class ShowPostViewController: UITabBarController, UITableViewDataSource, UITable
         case 0:
             return UITableView.automaticDimension
         case 1:
-            return 250
+            return 200
         case 2:
             return UITableView.automaticDimension
         case 3:

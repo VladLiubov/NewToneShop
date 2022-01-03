@@ -68,8 +68,11 @@ class PostPreviewTableViewCell: UITableViewCell {
         super.prepareForReuse()
         postTitleLabel.text = nil
         postImageView.image = nil
+        task?.cancel()
     }
-
+    
+    var task: URLSessionDataTask?
+    
     func configure(with viewModel: PostPreviewTableViewCellViewModel) {
         postTitleLabel.text = viewModel.title
 
@@ -78,7 +81,7 @@ class PostPreviewTableViewCell: UITableViewCell {
         }
         else if let url = viewModel.imageUrl {
             // Fetch image & cache
-            let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
+            task = URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
                 guard let data = data else {
                     return
                 }
@@ -88,7 +91,7 @@ class PostPreviewTableViewCell: UITableViewCell {
                     self?.postImageView.image = UIImage(data: data)
                 }
             }
-            task.resume()
+            task?.resume()
         }
     }
 }

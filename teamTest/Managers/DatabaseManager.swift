@@ -75,8 +75,7 @@ final class DatabaseManager {
 
     public func getPosts(
         completion: @escaping ([BlogPost]) -> Void
-)
-    {
+){
         database
             .collection("users")
             .document(UserDefaults.standard.string(forKey: "uid")!)

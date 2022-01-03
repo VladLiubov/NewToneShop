@@ -183,12 +183,15 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
            UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
            
            if editingStyle == .delete {
+               
+               let uid = UserDefaults.standard.string(forKey: "uid")!
+               let post = posts[indexPath.row]
+               let id = post.identifier
+               let db = Firestore.firestore()
+               db.collection("users").document(uid).collection("posts").document(id).delete()
+               
                posts.remove(at: indexPath.row)
                tableView.deleteRows(at: [indexPath as IndexPath], with: .fade)
-               
-
-               Database.database().reference().child("posts").child("id").removeValue()
-               
                
            } else if editingStyle == .insert {
            }

@@ -34,9 +34,8 @@ class PageViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.delegate = self
         tableView.dataSource = self
         fetchAllPosts()
-        tableView.reloadData()
-
-     
+        CreatePostViewController.didClose = {self.fetchAllPosts()}
+        
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideKeyboard)))
         
     }

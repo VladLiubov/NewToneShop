@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="caY-3X-MNR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="caY-3X-MNR">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -228,13 +228,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="WFA-j4-zg6">
+                            <tableView contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="WFA-j4-zg6">
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <searchBar key="tableHeaderView" contentMode="redraw" id="TPg-Em-CRk">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="51"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <textInputTraits key="textInputTraits"/>
+                                    <scopeButtonTitles>
+                                        <string>Title</string>
+                                        <string>Title</string>
+                                    </scopeButtonTitles>
                                     <connections>
                                         <outlet property="delegate" destination="QXb-XL-ocy" id="27N-9w-9lw"/>
                                     </connections>
@@ -248,15 +252,15 @@
                         <viewLayoutGuide key="safeArea" id="894-8s-qWt"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="WFA-j4-zg6" firstAttribute="leading" secondItem="894-8s-qWt" secondAttribute="leading" id="IJj-Un-bA2"/>
-                            <constraint firstItem="WFA-j4-zg6" firstAttribute="bottom" secondItem="894-8s-qWt" secondAttribute="bottom" id="mkq-Gh-cbJ"/>
-                            <constraint firstItem="WFA-j4-zg6" firstAttribute="trailing" secondItem="894-8s-qWt" secondAttribute="trailing" id="yuj-XT-giv"/>
-                            <constraint firstItem="WFA-j4-zg6" firstAttribute="top" secondItem="894-8s-qWt" secondAttribute="top" id="zJg-gy-4gu"/>
+                            <constraint firstItem="WFA-j4-zg6" firstAttribute="trailing" secondItem="894-8s-qWt" secondAttribute="trailing" id="FMD-yy-fw9"/>
+                            <constraint firstItem="WFA-j4-zg6" firstAttribute="bottom" secondItem="894-8s-qWt" secondAttribute="bottom" id="Zt5-tu-FOp"/>
+                            <constraint firstItem="WFA-j4-zg6" firstAttribute="leading" secondItem="894-8s-qWt" secondAttribute="leading" id="c2U-7r-bqK"/>
+                            <constraint firstItem="WFA-j4-zg6" firstAttribute="top" secondItem="894-8s-qWt" secondAttribute="top" id="mno-rX-2d4"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Главная" id="EZr-0R-Du1"/>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Товари" id="Eof-m3-YJI">
+                    <navigationItem key="navigationItem" title="Товари" largeTitleDisplayMode="always" id="Eof-m3-YJI">
                         <barButtonItem key="rightBarButtonItem" title="Item" width="100" style="plain" id="fIk-zn-65b">
                             <imageReference key="image" image="square.and.pencil" catalog="system" symbolScale="large"/>
                             <inset key="largeContentSizeImageInsets" minX="0.0" minY="1" maxX="0.0" maxY="0.0"/>
@@ -397,11 +401,13 @@
             <objects>
                 <navigationController id="SzW-rB-Anx" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Главная" id="kee-ty-tJh"/>
-                    <nil key="simulatedBottomBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" largeTitles="YES" id="fOS-Uq-LdE">
-                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" id="fOS-Uq-LdE">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
                     </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="uPx-fQ-4Zi">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="QXb-XL-ocy" kind="relationship" relationship="rootViewController" id="l84-R4-852"/>
                     </connections>
