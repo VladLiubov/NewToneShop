@@ -26,10 +26,10 @@ class PageViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         searchBar.delegate = self
         
-        tableView.register(PostPreviewTableViewCell.self,
-                           forCellReuseIdentifier: PostPreviewTableViewCell.identifier)
+//        tableView.register(PostPreviewTableViewCell.self,
+//                           forCellReuseIdentifier: PostPreviewTableViewCell.identifier)
         
-        self.tabBarController?.navigationItem.hidesBackButton = true
+        self.tableView.register(UINib(nibName: "PageTableViewCell", bundle: nil), forCellReuseIdentifier: "PageTableViewCell")
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -65,16 +65,25 @@ class PageViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let post = filterPosts[indexPath.row]
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: PostPreviewTableViewCell.identifier, for: indexPath) as? PostPreviewTableViewCell else {
-            fatalError()
+        
+//        guard let cell = tableView.dequeueReusableCell(withIdentifier: PostPreviewTableViewCell.identifier, for: indexPath) as? PostPreviewTableViewCell else {
+//            fatalError()
+//        }
+//        cell.configure(with: .init(title: post.title, imageUrl: post.headerImageUrl))
+//        return cell
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "PageTableViewCell") as? PageTableViewCell
+        else {
+            return UITableViewCell()
         }
-        cell.configure(with: .init(title: post.title, imageUrl: post.headerImageUrl))
+        let titlePost = post.title
+        cell.textLabel?.text = titlePost
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 100
+//    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)

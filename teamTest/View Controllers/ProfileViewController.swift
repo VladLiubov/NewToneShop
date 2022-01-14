@@ -37,6 +37,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         tableView.delegate = self
         tableView.dataSource = self
+        
         tableView.register(PostPreviewTableViewCell.self,
                            forCellReuseIdentifier: PostPreviewTableViewCell.identifier)
         

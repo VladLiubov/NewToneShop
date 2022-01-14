@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		840A206A2767E16800092142 /* CreatePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840A20692767E16800092142 /* CreatePostViewController.swift */; };
 		841F951C278303F000D3CDDB /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 841F951B278303F000D3CDDB /* FirebaseAppCheck */; };
+		841F95432785BF4600D3CDDB /* PageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841F95412785BF4600D3CDDB /* PageTableViewCell.swift */; };
+		841F95442785BF4600D3CDDB /* PageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 841F95422785BF4600D3CDDB /* PageTableViewCell.xib */; };
 		843B15AF274D6CF50096933F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843B15AE274D6CF50096933F /* AppDelegate.swift */; };
 		843B15B1274D6CF50096933F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843B15B0274D6CF50096933F /* SceneDelegate.swift */; };
 		843B15B3274D6CF50096933F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843B15B2274D6CF50096933F /* ViewController.swift */; };
@@ -38,6 +40,8 @@
 
 /* Begin PBXFileReference section */
 		840A20692767E16800092142 /* CreatePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostViewController.swift; sourceTree = "<group>"; };
+		841F95412785BF4600D3CDDB /* PageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageTableViewCell.swift; sourceTree = "<group>"; };
+		841F95422785BF4600D3CDDB /* PageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PageTableViewCell.xib; sourceTree = "<group>"; };
 		843B15AB274D6CF50096933F /* teamTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = teamTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		843B15AE274D6CF50096933F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		843B15B0274D6CF50096933F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -130,6 +134,8 @@
 			children = (
 				844EE761276F418C005936B7 /* PostHeaderViewController.swift */,
 				844EE763276F41B0005936B7 /* PostPreviewViewController.swift */,
+				841F95412785BF4600D3CDDB /* PageTableViewCell.swift */,
+				841F95422785BF4600D3CDDB /* PageTableViewCell.xib */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -245,6 +251,7 @@
 			files = (
 				843B15BB274D6CFA0096933F /* LaunchScreen.storyboard in Resources */,
 				84479C9F2750D1B6005A5E80 /* GoogleService-Info.plist in Resources */,
+				841F95442785BF4600D3CDDB /* PageTableViewCell.xib in Resources */,
 				843B15B8274D6CFA0096933F /* Assets.xcassets in Resources */,
 				843B15B6274D6CF50096933F /* Main.storyboard in Resources */,
 			);
@@ -270,6 +277,7 @@
 				843B15B3274D6CF50096933F /* ViewController.swift in Sources */,
 				843B15AF274D6CF50096933F /* AppDelegate.swift in Sources */,
 				84479CA32750D454005A5E80 /* SignInViewController.swift in Sources */,
+				841F95432785BF4600D3CDDB /* PageTableViewCell.swift in Sources */,
 				84D7E47A276B6FD700B7C765 /* StorageManager.swift in Sources */,
 				844EE764276F41B0005936B7 /* PostPreviewViewController.swift in Sources */,
 				84B3C55D27523308004FC9E0 /* Utilities.swift in Sources */,

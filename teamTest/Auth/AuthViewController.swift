@@ -16,6 +16,7 @@ class AuthViewController: UIViewController {
     override func viewDidLoad() {
     super.viewDidLoad()
 
+    setUpElements()
     checkLogin ()
     
     }
@@ -37,22 +38,19 @@ class AuthViewController: UIViewController {
         print (password)
         
         if email != nil || password != nil {
-            
             transitionToPage ()
-            
         } else {
-            
-            setUpElements()
-            
+        return
         }
     }
     
     func transitionToPage () {
         
+        DispatchQueue.main.async{
         let tabBarController = self.storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.tabBarViewController) as? UITabBarController
-        
-          self.navigationController?.pushViewController(tabBarController!, animated: true)
-//        view.window?.rootViewController = tabBarController
-//        view.window?.makeKeyAndVisible()
+         
+        self.view.window?.rootViewController = tabBarController
+        self.view.window?.makeKeyAndVisible()
+        }
     }
 }
