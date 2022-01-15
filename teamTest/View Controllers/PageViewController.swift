@@ -78,6 +78,7 @@ class PageViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         let titlePost = post.title
         cell.textLabel?.text = titlePost
+        cell.user = post.user
         return cell
     }
     

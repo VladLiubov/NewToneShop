@@ -172,7 +172,8 @@ class CreatePostViewController: UIViewController {
                     title: title,
                     cost: cost,
                     headerImageUrl: headerUrl,
-                    text: body
+                    text: body,
+                    user: nil
                 )
 
                 DatabaseManager.shared.insert(blogPost: post, email: email) { [weak self] posted in

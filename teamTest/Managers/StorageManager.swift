@@ -58,6 +58,29 @@ final class StorageManager {
             }
     }
     
+    public func uploadAvatar (
+        image: UIImage,
+        completion: @escaping (URL) -> Void
+    ) {
+        guard let pngData = image.png() else {
+            return
+        }
+        let ref =  container
+            .reference(withPath: "avatars/\(UUID().uuidString).png")
+       
+            ref.putData(pngData, metadata: nil) { metadata, error in
+                guard metadata != nil, error == nil else {
+                    return
+                }
+                ref.downloadURL { url, _ in
+                    guard let downloadURL = url else {
+                         return
+                       }
+                    completion(downloadURL)
+                }
+            }
+    }
+    
 }
 
 extension UIImage {

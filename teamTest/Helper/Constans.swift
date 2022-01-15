@@ -22,6 +22,7 @@ struct BlogPost {
     let cost: String
     let headerImageUrl: URL?
     let text: String
+    let user: User?
 }
 
 struct User {

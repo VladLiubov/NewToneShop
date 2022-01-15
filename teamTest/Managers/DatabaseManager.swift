@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import UIKit
 
 final class DatabaseManager {
     static let shared = DatabaseManager()
@@ -43,33 +44,46 @@ final class DatabaseManager {
         completion: @escaping ([BlogPost]) -> Void
     ) {
         database
-            .collectionGroup("posts")
+            .collection("users")
             .getDocuments { snapshot, error in
-                guard let documents = snapshot?.documents.compactMap({ $0.data() }),
+                guard let users = snapshot?.documents,
                       error == nil else {
                     return
                 }
-                let result: [BlogPost] = documents.compactMap({ dictionary in
-                    guard let id = dictionary["id"] as? String,
-                          let title = dictionary["title"] as? String,
-                          let body = dictionary["body"] as? String,
-                          let cost = dictionary["cost"] as? String,
-                          let imageUrlString = dictionary["headerImageUrl"] as? String else {
-                        print("Invalid post fetch conversion")
-                        return nil
-                    }
+                var results: [BlogPost] = []
+                users.forEach { user in
+                    self.database.collection("users").document(user.documentID).collection("posts").getDocuments { snapshot, error in
+                        guard let posts = snapshot?.documents.compactMap({$0.data()}),
+                              error == nil else {
+                            return
+                        }
+                        let userDocument = user.data()
+                        guard let name = userDocument["firstname"] as? String,       let email = userDocument["email"] as? String else {return}
+                        let userObj = User(name: name, email: email, profilePictureRef: userDocument["avatarURL"] as? String)
+                        let result: [BlogPost] = posts.compactMap({ dictionary in
+                            guard let id = dictionary["id"] as? String,
+                                  let title = dictionary["title"] as? String,
+                                  let body = dictionary["body"] as? String,
+                                  let cost = dictionary["cost"] as? String,
+                                  let imageUrlString = dictionary["headerImageUrl"] as? String else {
+                                print("Invalid post fetch conversion")
+                                return nil
+                            }
 
-                    let post = BlogPost(
-                        identifier: id,
-                        title: title,
-                        cost: cost,
-                        headerImageUrl: URL(string: imageUrlString),
-                        text: body
-                    )
-                    return post
-                })
-                print("Feed posts: \(result.count)")
-                completion(result)
+                            let post = BlogPost(
+                                identifier: id,
+                                title: title,
+                                cost: cost,
+                                headerImageUrl: URL(string: imageUrlString),
+                                text: body,
+                                user: userObj
+                            )
+                            return post
+                        })
+                        results.append(contentsOf: result)
+                    }
+                }
+                completion (results)
             }
     }
 
@@ -101,7 +115,8 @@ final class DatabaseManager {
                         title: title,
                         cost: cost,
                         headerImageUrl: URL(string: imageUrlString),
-                        text: body
+                        text: body,
+                        user: nil
                     )
                     return post
                 })
@@ -181,4 +196,17 @@ final class DatabaseManager {
         }
 
     }
+    
+    func uploadAvatar (uid: String, image: UIImage, completion: @escaping (String) -> Void) {
+        StorageManager.shared.uploadAvatar(image: image) {url in
+            self.database
+                .collection("users")
+                .document(UserDefaults.standard.string(forKey: "uid")!)
+                .updateData(["avatarURL":url.absoluteString]) { _ in
+                    completion (url.absoluteString)
+                }
+        }
+        
+    }
+    
 }

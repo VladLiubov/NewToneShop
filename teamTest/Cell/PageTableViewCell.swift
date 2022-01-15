@@ -15,6 +15,7 @@ class PageTableViewCell: UITableViewCell {
     @IBOutlet weak var costLabel: UILabel!
     @IBOutlet weak var firstName: UILabel!
     
+    var user: User?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -31,7 +32,7 @@ class PageTableViewCell: UITableViewCell {
     }
     
     func imageData () {
-        guard let urlString = UserDefaults.standard.value(forKey: "url") as? String,
+        guard let urlString = user?.profilePictureRef,
               let url = URL(string: urlString) else  {
                   return
               }
