@@ -15,7 +15,11 @@ class PageTableViewCell: UITableViewCell {
     @IBOutlet weak var costLabel: UILabel!
     @IBOutlet weak var firstName: UILabel!
     
-    var user: User?
+    var user: User? {
+        didSet {
+            imageData()
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()

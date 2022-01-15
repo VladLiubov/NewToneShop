@@ -81,9 +81,9 @@ final class DatabaseManager {
                             return post
                         })
                         results.append(contentsOf: result)
+                        completion(results)
                     }
                 }
-                completion (results)
             }
     }
 
