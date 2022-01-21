@@ -83,8 +83,19 @@ class PageViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.costLabel.text = labelCost
         let nameFirst = UserDefaults.standard.string(forKey: "firstname")
         cell.firstName.text = nameFirst
-        let image = post.headerImageUrl
-        cell.headerImageView = image
+        
+        let imageURL = post.headerImageUrl!
+            let queue = DispatchQueue.global(qos: .utility)
+            queue.async{
+                if let data = try? Data(contentsOf: imageURL){
+                    DispatchQueue.main.async {
+                        cell.headerImageView.image = UIImage(data: data)
+                         print("Show image data")
+                    }
+                    print("Did download  image data")
+                }
+            }
+
         return cell
     }
     
