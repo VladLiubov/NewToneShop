@@ -77,8 +77,14 @@ class PageViewController: UIViewController, UITableViewDelegate, UITableViewData
             return UITableViewCell()
         }
         let titlePost = post.title
-        cell.textLabel?.text = titlePost
+        cell.titleLabel.text = titlePost
         cell.user = post.user
+        let labelCost = post.cost
+        cell.costLabel.text = labelCost
+        let nameFirst = UserDefaults.standard.string(forKey: "firstname")
+        cell.firstName.text = nameFirst
+        let image = post.headerImageUrl
+        cell.headerImageView = image
         return cell
     }
     
