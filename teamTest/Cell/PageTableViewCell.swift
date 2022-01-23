@@ -15,16 +15,15 @@ class PageTableViewCell: UITableViewCell {
     @IBOutlet weak var costLabel: UILabel!
     @IBOutlet weak var firstName: UILabel!
     
-    var user: User? {
+    var post: BlogPost? {
         didSet {
-            imageData()
+            guard post != oldValue else { return }
+            configure()
         }
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        imageData()
         headerImageView.layer.cornerRadius = 16
         
         let imageView = profileImageView
@@ -35,20 +34,43 @@ class PageTableViewCell: UITableViewCell {
         imageView?.contentMode = .scaleAspectFill
     }
     
-    func imageData () {
-        guard let urlString = user?.profilePictureRef,
+    func profilePicture() {
+        profileImageView.image = nil
+        guard let urlString = post?.user?.profilePictureRef,
               let url = URL(string: urlString) else  {
                   return
               }
-        let task = URLSession.shared.dataTask(with: url, completionHandler: {data, _, error in
-            guard let data = data, error == nil else {
-                return
+        ImageManager.shared.load(url: url) { profilePicture, requestUrl in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self,
+                      let urlString = self.post?.user?.profilePictureRef,
+                      let url = URL(string: urlString),
+                      url == requestUrl
+                else { return }
+                self.profileImageView.image = profilePicture
             }
-            DispatchQueue.main.async {
-                let image = UIImage(data: data)
-                self.profileImageView.image = image
+        }
+    }
+    
+    func headerPicture() {
+        headerImageView.image = nil
+        guard let url = post?.headerImageUrl else { return }
+        ImageManager.shared.load(url: url) { headerImage, requestUrl in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self,
+                      let url = self.post?.headerImageUrl,
+                      url == requestUrl
+                else { return }
+                self.headerImageView.image = headerImage
             }
-        })
-        task.resume()
+        }
+    }
+    
+    private func configure() {
+        titleLabel.text = post?.title
+        costLabel.text = post?.cost
+        firstName.text = post?.user?.name
+        profilePicture()
+        headerPicture()
     }
 }

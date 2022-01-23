@@ -13,7 +13,7 @@ final class DatabaseManager {
     static let shared = DatabaseManager()
 
     private let database = Firestore.firestore()
-
+    private let queue = DispatchQueue(label: "DatabaseManager.queue")
     private init() {}
 
     public func insert(
@@ -43,48 +43,82 @@ final class DatabaseManager {
     public func getAllPosts(
         completion: @escaping ([BlogPost]) -> Void
     ) {
-        database
+        queue.async {
+        var users: [String: User] = [:]
+        let userGroup = DispatchGroup()
+        userGroup.enter()
+            self.database
             .collection("users")
             .getDocuments { snapshot, error in
-                guard let users = snapshot?.documents,
+                
+                defer { userGroup.leave() }
+                guard let usersDocuments = snapshot?.documents,
                       error == nil else {
-                    return
+                          return
+                      }
+                usersDocuments.forEach {
+                    let userData = $0.data()
+                    guard let name = userData["firstname"] as? String,
+                          let email = userData["email"] as? String
+                    else { return }
+                    users[$0.documentID] = User(
+                        name: name,
+                        email: email,
+                        profilePictureRef: userData["avatarURL"] as? String
+                    )
                 }
-                var results: [BlogPost] = []
-                users.forEach { user in
-                    self.database.collection("users").document(user.documentID).collection("posts").getDocuments { snapshot, error in
+            }
+            userGroup.notify(queue: self.queue) {
+            print("==== users \(users.count)")
+            var results: [BlogPost] = []
+            let group = DispatchGroup()
+            users.forEach { user in
+                group.enter()
+                self.database
+                    .collection("users")
+                    .document(user.key)
+                    .collection("posts")
+                    .getDocuments { snapshot, error in
+                        defer {
+                            group.leave()
+                        }
                         guard let posts = snapshot?.documents.compactMap({$0.data()}),
                               error == nil else {
-                            return
-                        }
-                        let userDocument = user.data()
-                        guard let name = userDocument["firstname"] as? String,       let email = userDocument["email"] as? String else {return}
-                        let userObj = User(name: name, email: email, profilePictureRef: userDocument["avatarURL"] as? String)
+                                  return
+                              }
+                        
+                        
                         let result: [BlogPost] = posts.compactMap({ dictionary in
                             guard let id = dictionary["id"] as? String,
                                   let title = dictionary["title"] as? String,
                                   let body = dictionary["body"] as? String,
                                   let cost = dictionary["cost"] as? String,
                                   let imageUrlString = dictionary["headerImageUrl"] as? String else {
-                                print("Invalid post fetch conversion")
-                                return nil
-                            }
-
+                                      print("Invalid post fetch conversion")
+                                      return nil
+                                  }
+                            
                             let post = BlogPost(
                                 identifier: id,
                                 title: title,
                                 cost: cost,
                                 headerImageUrl: URL(string: imageUrlString),
                                 text: body,
-                                user: userObj
+                                user: user.value
                             )
                             return post
                         })
                         results.append(contentsOf: result)
-                        completion(results)
                     }
-                }
             }
+                group.notify(queue: self.queue) {
+                debugPrint("=== posts \(results.count)")
+                completion(results.sorted(by: { post1, post2 in
+                    post1.title < post2.title
+                }))
+            }
+        }
+        }
     }
 
     public func getPosts(

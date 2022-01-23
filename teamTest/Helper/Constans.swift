@@ -16,13 +16,18 @@ struct Constants {
     }
 }
 
-struct BlogPost {
+struct BlogPost: Identifiable, Equatable {
+    var id: String { identifier }
     let identifier: String
     let title: String
     let cost: String
     let headerImageUrl: URL?
     let text: String
     let user: User?
+    
+    static func == (lhs: BlogPost, rhs: BlogPost) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 struct User {

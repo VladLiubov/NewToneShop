@@ -33,8 +33,7 @@ class PageViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         tableView.delegate = self
         tableView.dataSource = self
-        fetchAllPosts()
-        CreatePostViewController.didClose = {self.fetchAllPosts()}
+        CreatePostViewController.didClose = { self.fetchAllPosts() }
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideKeyboard)))
         
@@ -44,19 +43,26 @@ class PageViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.view.endEditing(true)
     }
     
-    private var posts: [BlogPost] = []
+    private var posts: [BlogPost] = [] {
+        didSet {
+            guard posts != oldValue else { return }
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
+                debugPrint("=== reload")
+            }
+        }
+    }
     
     private func fetchAllPosts() {
         
-        print("Fetching posts...")
+        print("=== Fetching posts...")
         
         DatabaseManager.shared.getAllPosts { [weak self] posts in
             self?.posts = posts
             self?.filterPosts = posts
-            DispatchQueue.main.async {
-                self?.tableView.reloadData()
-            }
         }
+        
+        print("=== ...")
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -76,25 +82,27 @@ class PageViewController: UIViewController, UITableViewDelegate, UITableViewData
         else {
             return UITableViewCell()
         }
-        let titlePost = post.title
-        cell.titleLabel.text = titlePost
-        cell.user = post.user
-        let labelCost = post.cost
-        cell.costLabel.text = labelCost
-        let nameFirst = UserDefaults.standard.string(forKey: "firstname")
-        cell.firstName.text = nameFirst
-        
-        let imageURL = post.headerImageUrl!
-            let queue = DispatchQueue.global(qos: .utility)
-            queue.async{
-                if let data = try? Data(contentsOf: imageURL){
-                    DispatchQueue.main.async {
-                        cell.headerImageView.image = UIImage(data: data)
-                         print("Show image data")
-                    }
-                    print("Did download  image data")
-                }
-            }
+        cell.post = post
+//
+//        let titlePost = post.title
+//        cell.titleLabel.text = titlePost
+//        cell.user = post.user
+//        let labelCost = post.cost
+//        cell.costLabel.text = labelCost
+//        let nameFirst = UserDefaults.standard.string(forKey: "firstname")
+//        cell.firstName.text = nameFirst
+//        
+//        let imageURL = post.headerImageUrl!
+//            let queue = DispatchQueue.global(qos: .utility)
+//            queue.async{
+//                if let data = try? Data(contentsOf: imageURL){
+//                    DispatchQueue.main.async {
+//                        cell.headerImageView.image = UIImage(data: data)
+//                         print("Show image data")
+//                    }
+//                    print("Did download  image data")
+//                }
+//            }
 
         return cell
     }
