@@ -14,6 +14,8 @@ class PageTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var costLabel: UILabel!
     @IBOutlet weak var firstName: UILabel!
+    @IBOutlet weak var gradientView: UIView!
+    @IBOutlet weak var view: UIView!
     
     var post: BlogPost? {
         didSet {
@@ -22,8 +24,10 @@ class PageTableViewCell: UITableViewCell {
         }
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        view.layer.cornerRadius = 16
         headerImageView.layer.cornerRadius = 16
         
         let imageView = profileImageView
@@ -32,6 +36,16 @@ class PageTableViewCell: UITableViewCell {
         imageView?.translatesAutoresizingMaskIntoConstraints = false
         imageView?.layer.cornerRadius = 50.0
         imageView?.contentMode = .scaleAspectFill
+        
+        let gradient = CAGradientLayer()
+        gradient.colors = [UIColor.lightGray.cgColor, UIColor.clear.cgColor]
+        gradient.locations = [0,1]
+        gradient.startPoint = CGPoint(x: 0.5, y: 1.0)
+        gradient.endPoint = CGPoint(x: 0.5, y: 0.0)
+        gradient.frame = bounds
+        
+        gradientView.layer.insertSublayer(gradient, at: 0)
+        
     }
     
     func profilePicture() {
