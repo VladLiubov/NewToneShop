@@ -17,6 +17,15 @@ class PageTableViewCell: UITableViewCell {
     @IBOutlet weak var gradientView: UIView!
     @IBOutlet weak var view: UIView!
     
+    let gradient: CAGradientLayer = {
+        let gradient = CAGradientLayer()
+        gradient.colors = [UIColor.black.cgColor, UIColor.clear.cgColor]
+        gradient.locations = [0,1]
+        gradient.startPoint = CGPoint(x: 0.5, y: 1.0)
+        gradient.endPoint = CGPoint(x: 0.5, y: 0.0)
+        return gradient
+    } ()
+    
     var post: BlogPost? {
         didSet {
             guard post != oldValue else { return }
@@ -27,6 +36,11 @@ class PageTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        if gradient.superlayer == nil {
+            gradientView.layer.insertSublayer(gradient, at: 0)
+        }
+        gradient.frame = bounds
+       
         view.layer.cornerRadius = 16
         headerImageView.layer.cornerRadius = 16
         
@@ -37,14 +51,7 @@ class PageTableViewCell: UITableViewCell {
         imageView?.layer.cornerRadius = 50.0
         imageView?.contentMode = .scaleAspectFill
         
-        let gradient = CAGradientLayer()
-        gradient.colors = [UIColor.lightGray.cgColor, UIColor.clear.cgColor]
-        gradient.locations = [0,1]
-        gradient.startPoint = CGPoint(x: 0.5, y: 1.0)
-        gradient.endPoint = CGPoint(x: 0.5, y: 0.0)
-        gradient.frame = bounds
-        
-        gradientView.layer.insertSublayer(gradient, at: 0)
+       
         
     }
     
@@ -63,6 +70,7 @@ class PageTableViewCell: UITableViewCell {
                       url == requestUrl
                 else { return }
                     self.profileImageView.image = profilePicture
+                    self.profileImageView.isHidden = false
             }
         }
     }

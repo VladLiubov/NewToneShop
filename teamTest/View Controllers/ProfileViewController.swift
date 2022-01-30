@@ -30,18 +30,21 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         super.init(coder: decoder)!
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        fetchUserPosts()
+        tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        fetchUserPosts()
         
         tableView.delegate = self
         tableView.dataSource = self
         
         tableView.register(PostPreviewTableViewCell.self,
                            forCellReuseIdentifier: PostPreviewTableViewCell.identifier)
-        
-        tableView.reloadData()
+
         
         let emailLabel = emailAddress
         emailLabel?.text = UserDefaults.standard.string(forKey: "email")
@@ -112,32 +115,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             self.profileImage.image = image
             UserDefaults.standard.set(url, forKey: "url")
         }
-        
-//        guard let imageData = image.pngData() else {
-//            return
-//        }
-//
-//        storage.child("avatars/file.png").putData(imageData, metadata: nil, completion: {_, error in
-//
-//            guard error == nil else {
-//                print("Не получилось")
-//                return
-//            }
-//
-//            self.storage.child("avatars/file.png").downloadURL(completion: {url, error in
-//
-//                guard let url = url, error == nil else {
-//                    return
-//                }
-//
-//                self.profileImage.image = image
-//
-//                let urlString = url.absoluteString
-//                print ("Download url: \(urlString)")
-//                UserDefaults.standard.set(urlString, forKey: "url")
-//            })
-//
-//        })
     }
 
 // MARK: TableBView

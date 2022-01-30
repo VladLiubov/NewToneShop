@@ -18,6 +18,9 @@ class PageViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidAppear(animated)
         fetchAllPosts()
         tableView.reloadData()
+        if !self.posts.isEmpty {
+            self.tableView.scrollToRow(at: .init(row: 0, section: 0), at: .top, animated: false)
+        }
         print ("print")
     }
     
@@ -25,9 +28,6 @@ class PageViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         
         searchBar.delegate = self
-        
-//        tableView.register(PostPreviewTableViewCell.self,
-//                           forCellReuseIdentifier: PostPreviewTableViewCell.identifier)
         
         self.tableView.register(UINib(nibName: "PageTableViewCell", bundle: nil), forCellReuseIdentifier: "PageTableViewCell")
         
@@ -47,8 +47,12 @@ class PageViewController: UIViewController, UITableViewDelegate, UITableViewData
         didSet {
             guard posts != oldValue else { return }
             DispatchQueue.main.async { [weak self] in
-                self?.tableView.reloadData()
+                guard let self = self else {return}
+                self.tableView.reloadData()
                 debugPrint("=== reload")
+                if !self.posts.isEmpty {
+                    self.tableView.scrollToRow(at: .init(row: 0, section: 0), at: .top, animated: false)
+                }
             }
         }
     }
@@ -83,33 +87,8 @@ class PageViewController: UIViewController, UITableViewDelegate, UITableViewData
             return UITableViewCell()
         }
         cell.post = post
-//
-//        let titlePost = post.title
-//        cell.titleLabel.text = titlePost
-//        cell.user = post.user
-//        let labelCost = post.cost
-//        cell.costLabel.text = labelCost
-//        let nameFirst = UserDefaults.standard.string(forKey: "firstname")
-//        cell.firstName.text = nameFirst
-//        
-//        let imageURL = post.headerImageUrl!
-//            let queue = DispatchQueue.global(qos: .utility)
-//            queue.async{
-//                if let data = try? Data(contentsOf: imageURL){
-//                    DispatchQueue.main.async {
-//                        cell.headerImageView.image = UIImage(data: data)
-//                         print("Show image data")
-//                    }
-//                    print("Did download  image data")
-//                }
-//            }
-
         return cell
     }
-    
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 100
-//    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
