@@ -52,6 +52,7 @@ class PageTableViewCell: UITableViewCell {
         profileImageView.image = nil
         guard let urlString = post?.user?.profilePictureRef,
               let url = URL(string: urlString) else  {
+                  self.profileImageView.isHidden = true
                   return
               }
         ImageManager.shared.load(url: url) { profilePicture, requestUrl in
@@ -61,7 +62,7 @@ class PageTableViewCell: UITableViewCell {
                       let url = URL(string: urlString),
                       url == requestUrl
                 else { return }
-                self.profileImageView.image = profilePicture
+                    self.profileImageView.image = profilePicture
             }
         }
     }
@@ -84,7 +85,7 @@ class PageTableViewCell: UITableViewCell {
         titleLabel.text = post?.title
         costLabel.text = post?.cost
         firstName.text = post?.user?.name
-        profilePicture()
         headerPicture()
+        profilePicture()
     }
 }
